@@ -1,0 +1,23 @@
+# python
+__pycache__/
+*.pyc
+*.pyo
+
+# virtual env
+venv/
+env/
+
+# dataset large files
+data/raw/
+*.csv
+
+# models
+*.pkl
+*.joblib
+
+# system
+.DS_Store
+.ipynb_checkpoints/
+
+# streamlit
+.streamlit/
