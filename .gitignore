@@ -23,3 +23,8 @@ data/raw/
 
 # streamlit
 .streamlit/
+
+
+# exception becouse it is cousing problem in the deployment.
+!model.pkl
+!scaler.pkl
