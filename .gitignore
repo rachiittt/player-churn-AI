@@ -25,6 +25,6 @@ data/raw/
 .streamlit/
 
 
-# exception becouse it is cousing problem in the deployment.
+# exception for .pkl files becouse it is cousing problem in the deployment.
 !model.pkl
 !scaler.pkl
