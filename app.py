@@ -1,4 +1,4 @@
-#Gender -> 1 Female 0 Male
+# Gender -> 1 Female 0 Male
 # Churn -> 1 = Yes 0 = No
 # Scaler is imported in the form of = scaler.pkl
 # Model is exported as model.pkl
@@ -7,49 +7,61 @@ import streamlit as st
 import joblib
 import numpy as np
 
+# ---------------- LOAD MODEL ----------------
 model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-st.title("Churn Prediction App")
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(page_title="Customer Churn Predictor", page_icon="📉", layout="centered")
+
+st.title("📉 Customer Churn Prediction System")
+st.write("Adjust the sliders to simulate customer behaviour and predict churn risk.")
 
 st.divider()
 
-st.write("Please enter the values and hit the predict button for getting a prediction.")
+# ---------------- INPUT UI ----------------
+age = st.slider("Customer Age", 18, 80, 35)
+
+gender = st.selectbox("Gender", ["Male", "Female"])
+gender_val = 1 if gender == "Female" else 0
+
+tenure = st.slider("Tenure (Months with company)", 0, 120, 12)
+
+monthly = st.slider("Monthly Charges ($)", 30.0, 120.0, 70.0)
 
 st.divider()
 
-# Inputs
-age = st.number_input("Enter age", min_value=10, max_value=100, value=30)
-tenure = st.number_input("Enter Tenure", min_value=0, max_value=130, value=10)
-monthlycharge = st.number_input("Enter Monthly Charge", min_value=30, max_value=150)
-gender = st.selectbox("Enter the Gender", ["Male", "Female"])
+# ---------------- PREDICT ----------------
+if st.button("🔍 Predict Churn Risk"):
 
-st.divider()
+    # Arrange features
+    X = np.array([[age, gender_val, tenure, monthly]])
 
-predictbutton = st.button("Predict!")
+    # Scale
+    X_scaled = scaler.transform(X)
 
-if predictbutton:
+    # Probability
+    prob = model.predict_proba(X_scaled)[0][1]   # probability of churn
+    percent = round(prob * 100, 2)
 
-    # encode gender
-    gender_selected = 1 if gender == "Female" else 0
+    # Risk category
+    if percent < 40:
+        risk = "🟢 Low Risk (Customer likely to stay)"
+        st.success(risk)
+    elif percent < 70:
+        risk = "🟡 Medium Risk (Customer may leave)"
+        st.warning(risk)
+    else:
+        risk = "🔴 High Risk (Customer likely to leave)"
+        st.error(risk)
 
-    # correct order: Age, Gender, Tenure, MonthlyCharges
-    X = [age, gender_selected, tenure, monthlycharge]
+    # Progress bar animation
+    st.subheader(f"Churn Probability: {percent}%")
+    st.progress(int(percent))
 
-    # reshape properly (very important)
-    X_array = np.array(X).reshape(1, -1)
+    # Balloons for loyal customers
+    if percent < 40:
+        st.balloons()
 
-    # scale
-    X_scaled = scaler.transform(X_array)
-
-    # predict
-    prediction = model.predict(X_scaled)[0]
-
-    predicted = "Yes" if prediction == 1 else "No"
-
-    st.balloons()
-    st.write(f"Predicted: {predicted}")
-
-
-else :
-    st.write("Please enter the values and use predict button")
+else:
+    st.info("Adjust the sliders and click Predict to analyze churn risk.")
