@@ -61,6 +61,7 @@ Hosted on Streamlit Cloud
 Git LFS configured for model file handling
 
 🏗️ System Architecture
+```
 User Input (Streamlit UI)
         ↓
 Feature Encoding & Scaling (StandardScaler)
@@ -72,6 +73,7 @@ Churn Probability Output (%)
 Risk Classification (Low / Medium / High)
         ↓
 Result Display in UI
+```
 📊 Dataset Features
 
 Typical gameplay features used:
@@ -83,8 +85,9 @@ Monthly Charges	Spending behavior
 Gender	Encoded demographic feature
 
 Target Variable:
-
+```
 Churn (1 = Yes, 0 = No)
+```
 
 🤖 Machine Learning Pipeline
 Preprocessing
@@ -147,6 +150,7 @@ Git LFS configured for model file handling
 
 
 🏗️ System Architecture
+```
 User Input (Streamlit UI)
         ↓
 Feature Encoding & Scaling (StandardScaler)
@@ -158,6 +162,7 @@ Churn Probability Output (%)
 Risk Classification (Low / Medium / High)
         ↓
 Result Display in UI
+```
 
 📊 Dataset Features
 FeatureDescriptionAgePlayer ageTenureDuration with platformMonthly ChargesSpending behaviorGenderEncoded demographic feature
@@ -183,6 +188,7 @@ CategoryToolsMachine LearningPython, Scikit-learn, Pandas, NumPyVisualizationMat
 
 📁 Project Structure
 player-churn-AI/
+```
 │
 ├── app.py                # Streamlit application
 ├── notebook.ipynb        # EDA and model training
@@ -192,18 +198,26 @@ player-churn-AI/
 ├── README.md             # Project documentation
 ├── .gitignore            # Git ignored files
 └── .gitattributes        # Git LFS tracking configuration
-
+```
 🖥️ Running the Project Locally
 1️⃣ Clone Repository
+```bash
 bashgit clone https://github.com/rachiittt/player-churn-AI.git
 cd player-churn-AI
+```
 2️⃣ Create Virtual Environment
+```bash
 bashpython -m venv venv
 source venv/bin/activate
+```
 3️⃣ Install Dependencies
+```bash
 bashpip install -r requirements.txt
+```
 4️⃣ Run Application
+```bash
 bashstreamlit run app.py
+```
 
 🌐 Live Demo
 🔗 https://churn-predictor-ai.streamlit.app/
@@ -229,8 +243,9 @@ Integrate AI-driven retention recommendation module
 
 
 👨‍💻 Authors
+```
 Rachit Singh, Satwik Tripathi, Ayush, Ashar
 AI/ML Project — Player Behavior Analytics
-
+```
 📜 License
 For academic and educational purposes only.
