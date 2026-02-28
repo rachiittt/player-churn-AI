@@ -1,88 +1,91 @@
-🎮 Intelligent Player Churn Prediction & Agentic Engagement Optimization
+🎮 Intelligent Player Churn Prediction System
 
-From Gameplay Analytics → AI-Driven Retention Strategies
+From Gameplay Analytics → Predictive Retention Insights
 
-An end-to-end AI & Machine Learning project that predicts player churn using gameplay analytics and evolves into an agentic AI assistant that recommends personalized engagement strategies to retain players.
-
-This project demonstrates the complete pipeline:
-
-Data → ML Prediction → Behavior Analysis → AI Reasoning → Retention Plan
+An end-to-end Machine Learning project that predicts player churn using gameplay behavior data and provides probability-based risk analysis through an interactive web application.
 
 📌 Project Overview
 
-Modern games lose players every day — but why do they leave?
+Player retention is one of the biggest challenges in modern gaming platforms.
+Understanding which players are likely to leave helps companies take proactive steps to improve engagement and revenue.
 
-This system analyzes player behavior patterns and:
+This system:
 
-Predicts whether a player is likely to leave (churn)
+Analyzes structured gameplay behavior data
 
-Explains the risk factors
+Predicts churn probability using Machine Learning
 
-Generates personalized retention strategies using AI reasoning
+Classifies players into Low / Medium / High churn risk
 
-The project is implemented in two milestones:
-
-Milestone	Focus	Goal
-Milestone 1	Machine Learning	Predict churn risk
-Milestone 2	Agentic AI	Improve player engagement
-
-The system moves from predictive analytics → autonomous decision support.
+Provides real-time prediction through a live deployed application
 
 🧠 Problem Statement
 
-Game companies struggle with player retention.
+Game companies need to identify players who are likely to stop playing (churn) before it happens.
 
-We solve:
+This project answers:
 
-“Which players will leave — and how can we stop them?”
+“Can we predict churn risk using player behavior patterns?”
 
-Instead of only detecting churn, our system acts on it by suggesting engagement improvements.
+The solution provides probabilistic churn predictions that can support data-driven retention strategies.
 
-🚀 Features
-🔹 Machine Learning (Milestone 1)
+🚀 Core Features
+🔹 Machine Learning Model
 
-Player behavior data ingestion (CSV)
+Data preprocessing and feature scaling
 
-Data preprocessing & feature engineering
+Logistic Regression classifier
 
-Churn prediction model
+Class imbalance handling (class_weight="balanced")
 
-Performance evaluation metrics
+Performance evaluation using Accuracy, Precision, Recall, F1-score
 
-Interactive dashboard
+🔹 Real-Time Prediction App
 
-🔹 Agentic AI (Milestone 2)
+Streamlit-based interactive UI
 
-Player behavior reasoning
+User input form for gameplay features
 
-Retrieval-augmented recommendations
+Displays churn probability (%)
 
-Personalized retention plan generation
+Assigns risk category (Low / Medium / High)
 
-Structured AI output
+Instant prediction output
 
-Decision explanation
+🔹 Deployment Ready
+
+Model serialized using Joblib
+
+Hosted on Streamlit Cloud
+
+Git LFS configured for model file handling
 
 🏗️ System Architecture
-Player Data → Preprocessing → ML Model → Churn Risk
-                                      ↓
-                               Behavior Analysis
-                                      ↓
-                               AI Reasoning Agent
-                                      ↓
-                         Personalized Retention Plan
-
+User Input (Streamlit UI)
+        ↓
+Feature Encoding & Scaling (StandardScaler)
+        ↓
+Logistic Regression Model
+        ↓
+Churn Probability Output (%)
+        ↓
+Risk Classification (Low / Medium / High)
+        ↓
+Result Display in UI
 📊 Dataset Features
 
-Typical player features used:
+Typical gameplay features used:
 
 Feature	Description
-Session Frequency	How often player logs in
-Playtime	Time spent in game
-Actions	In-game activity count
-Purchases	Spending behavior
-Progression	Level completion
-Social Activity	Interaction with other players
+Age	Player age
+Tenure	Duration with platform
+Monthly Charges	Spending behavior
+Gender	Encoded demographic feature
+
+Target Variable:
+
+Churn (1 = Yes, 0 = No)
+
 🤖 Machine Learning Pipeline
 Preprocessing
 
@@ -90,148 +93,109 @@ Missing value handling
 
 Label encoding
 
-Feature scaling
+Feature scaling using StandardScaler
 
-Feature selection
+Stratified train-test split
 
-Models Used
+Model
 
 Logistic Regression
 
-Random Forest Classifier
+Balanced class weighting
 
 Evaluation Metrics
 
-Accuracy
+Accuracy: 65%
 
-Precision
+Precision: 0.928
 
-Recall
+Recall: 0.655
 
-AUC Score
-
-🧩 Agentic AI Module
-
-The AI assistant:
-
-Interprets churn risk
-
-Finds reasons for disengagement
-
-Retrieves retention strategies
-
-Generates actionable recommendations
-
-Example Output
-Player Summary:
-Low session frequency and declining playtime detected
-
-Risk Level:
-High churn probability
-
-Suggested Actions:
-• Offer daily login rewards
-• Trigger personalized challenges
-• Send re-engagement notification
-• Recommend cooperative gameplay mode
+F1-Score: 0.768
 
 🛠️ Tech Stack
 Machine Learning
 
 Python
 
-Scikit-Learn
+Scikit-learn
 
 Pandas
 
 NumPy
 
-Agentic AI
+Visualization
 
-LangGraph
-
-RAG (Chroma / FAISS)
-
-Open-source LLMs
-
-Frontend / UI
-
-Streamlit
+Matplotlib
 
 Deployment
 
-Streamlit Cloud / HuggingFace Spaces / Render
+Streamlit
+
+Streamlit Cloud
+
+Git LFS
+
+GitHub
 
 📁 Project Structure
 player-churn-AI/
 │
-├── data/                 # Dataset
-├── notebooks/            # EDA & experiments
-├── models/               # Saved ML models
-├── preprocessing/        # Feature engineering
-├── agent/                # AI reasoning workflow
-├── app/                  # Streamlit UI
-├── utils/                # Helper functions
-├── requirements.txt
-└── README.md
-
-🖥️ Running the Project
+├── app.py                # Streamlit application
+├── notebook.ipynb        # EDA and model training
+├── model.pkl             # Trained Logistic Regression model
+├── scaler.pkl            # Saved StandardScaler
+├── requirements.txt      # Project dependencies
+├── README.md             # Project documentation
+├── .gitignore            # Git ignored files
+└── .gitattributes        # Git LFS tracking configuration
+🖥️ Running the Project Locally
 1️⃣ Clone Repository
-git clone https://github.com/yourusername/player-churn-ai.git
-cd player-churn-ai
-
+git clone https://github.com/rachiittt/player-churn-AI.git
+cd player-churn-AI
 2️⃣ Create Virtual Environment
 python -m venv venv
 source venv/bin/activate
-
 3️⃣ Install Dependencies
 pip install -r requirements.txt
-
 4️⃣ Run Application
 streamlit run app.py
+🌐 Live Demo
 
-📈 Example Workflow
-
-Upload player dataset
-
-System predicts churn probability
-
-AI analyzes behavior patterns
-
-Personalized retention strategy generated
+https://churn-predictor-ai.streamlit.app/
 
 🎯 Learning Outcomes
 
 This project demonstrates:
 
-Applied Machine Learning pipeline
+End-to-end ML pipeline design
 
-Feature engineering for behavioral data
+Handling imbalanced datasets
 
-Model evaluation & interpretation
+Feature scaling and preprocessing
 
-Retrieval-Augmented Generation (RAG)
+Model evaluation and interpretation
 
-Agentic AI workflow design
+ML deployment using Streamlit
 
-End-to-end ML deployment
+Version control with Git LFS
 
 📌 Future Improvements
 
-Real-time player tracking
+Add more behavioral features
 
-Reinforcement learning rewards system
+Compare with advanced models (Random Forest, XGBoost)
 
-Multi-game compatibility
+Improve recall for better churn detection
 
-Player segmentation clustering
+Add explainability (SHAP values)
 
-Live notification integration
+Integrate AI-driven retention recommendation module
 
 👨‍💻 Author
 
-Rachit Singh
-AI/ML Project — Intelligent Gaming Analytics
+Rachit Singh,Satwik Tripathi,Ayush,Ashar
+AI/ML Project — Player Behavior Analytics
 
 📜 License
 
