@@ -99,44 +99,87 @@ Stratified train-test split
 
 Model
 
-Logistic Regression
+Logistic Regression🎮 Intelligent Player Churn Prediction System
 
-Balanced class weighting
+From Gameplay Analytics → Predictive Retention Insights
+
+An end-to-end Machine Learning project that predicts player churn using gameplay behavior data and provides probability-based risk analysis through an interactive web application.
+
+📌 Project Overview
+Player retention is one of the biggest challenges in modern gaming platforms. Understanding which players are likely to leave helps companies take proactive steps to improve engagement and revenue.
+This system:
+
+Analyzes structured gameplay behavior data
+Predicts churn probability using Machine Learning
+Classifies players into Low / Medium / High churn risk
+Provides real-time prediction through a live deployed application
+
+
+🧠 Problem Statement
+Game companies need to identify players who are likely to stop playing (churn) before it happens.
+This project answers:
+
+"Can we predict churn risk using player behavior patterns?"
+
+The solution provides probabilistic churn predictions that can support data-driven retention strategies.
+
+🚀 Core Features
+🔹 Machine Learning Model
+
+Data preprocessing and feature scaling
+Logistic Regression classifier
+Class imbalance handling (class_weight="balanced")
+Performance evaluation using Accuracy, Precision, Recall, F1-score
+
+🔹 Real-Time Prediction App
+
+Streamlit-based interactive UI
+User input form for gameplay features
+Displays churn probability (%)
+Assigns risk category (Low / Medium / High)
+Instant prediction output
+
+🔹 Deployment Ready
+
+Model serialized using Joblib
+Hosted on Streamlit Cloud
+Git LFS configured for model file handling
+
+
+🏗️ System Architecture
+User Input (Streamlit UI)
+        ↓
+Feature Encoding & Scaling (StandardScaler)
+        ↓
+Logistic Regression Model
+        ↓
+Churn Probability Output (%)
+        ↓
+Risk Classification (Low / Medium / High)
+        ↓
+Result Display in UI
+
+📊 Dataset Features
+FeatureDescriptionAgePlayer ageTenureDuration with platformMonthly ChargesSpending behaviorGenderEncoded demographic feature
+Target Variable: Churn (1 = Yes, 0 = No)
+
+🤖 Machine Learning Pipeline
+Preprocessing
+
+Missing value handling
+Label encoding
+Feature scaling using StandardScaler
+Stratified train-test split
+
+Model
+
+Logistic Regression with balanced class weighting
 
 Evaluation Metrics
-
-Accuracy: 65%
-
-Precision: 0.928
-
-Recall: 0.655
-
-F1-Score: 0.768
+MetricScoreAccuracy65%Precision0.928Recall0.655F1-Score0.768
 
 🛠️ Tech Stack
-Machine Learning
-
-Python
-
-Scikit-learn
-
-Pandas
-
-NumPy
-
-Visualization
-
-Matplotlib
-
-Deployment
-
-Streamlit
-
-Streamlit Cloud
-
-Git LFS
-
-GitHub
+CategoryToolsMachine LearningPython, Scikit-learn, Pandas, NumPyVisualizationMatplotlibDeploymentStreamlit, Streamlit Cloud, Git LFS, GitHub
 
 📁 Project Structure
 player-churn-AI/
@@ -149,54 +192,45 @@ player-churn-AI/
 ├── README.md             # Project documentation
 ├── .gitignore            # Git ignored files
 └── .gitattributes        # Git LFS tracking configuration
+
 🖥️ Running the Project Locally
 1️⃣ Clone Repository
-git clone https://github.com/rachiittt/player-churn-AI.git
+bashgit clone https://github.com/rachiittt/player-churn-AI.git
 cd player-churn-AI
 2️⃣ Create Virtual Environment
-python -m venv venv
+bashpython -m venv venv
 source venv/bin/activate
 3️⃣ Install Dependencies
-pip install -r requirements.txt
+bashpip install -r requirements.txt
 4️⃣ Run Application
-streamlit run app.py
-🌐 Live Demo
+bashstreamlit run app.py
 
-https://churn-predictor-ai.streamlit.app/
+🌐 Live Demo
+🔗 https://churn-predictor-ai.streamlit.app/
 
 🎯 Learning Outcomes
-
 This project demonstrates:
 
 End-to-end ML pipeline design
-
 Handling imbalanced datasets
-
 Feature scaling and preprocessing
-
 Model evaluation and interpretation
-
 ML deployment using Streamlit
-
 Version control with Git LFS
+
 
 📌 Future Improvements
 
 Add more behavioral features
-
 Compare with advanced models (Random Forest, XGBoost)
-
 Improve recall for better churn detection
-
 Add explainability (SHAP values)
-
 Integrate AI-driven retention recommendation module
 
-👨‍💻 Author
 
-Rachit Singh,Satwik Tripathi,Ayush,Ashar
+👨‍💻 Authors
+Rachit Singh, Satwik Tripathi, Ayush, Ashar
 AI/ML Project — Player Behavior Analytics
 
 📜 License
-
 For academic and educational purposes only.
