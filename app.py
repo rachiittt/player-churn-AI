@@ -5,53 +5,62 @@ import numpy as np
 model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-st.set_page_config(page_title="Customer Churn Predictor", page_icon="📉", layout="centered")
+st.set_page_config(page_title="Player Churn Predictor", page_icon="🎮", layout="centered")
 
-st.title("📉 Customer Churn Prediction System")
-st.write("Adjust the sliders to simulate customer behaviour and predict churn risk.")
+st.title("🎮 Player Churn Prediction System")
+st.write("Adjust the gaming behavior metrics to predict the likelihood of player churn (low engagement).")
 
 st.divider()
 
-age = st.slider("Customer Age", 18, 80, 35)
+col1, col2 = st.columns(2)
 
-gender = st.selectbox("Gender", ["Male", "Female"])
-gender_val = 1 if gender == "Female" else 0
+with col1:
+    age = st.slider("Player Age", 15, 65, 25)
+    gender = st.selectbox("Gender", ["Male", "Female"])
+    location = st.selectbox("Location", ["USA", "Europe", "Asia", "Other"])
+    genre = st.selectbox("Favorite Game Genre", ["Action", "RPG", "Strategy", "Sports", "Simulation"])
+    purchases = st.selectbox("In-Game Purchases", ["No", "Yes"])
 
-tenure = st.slider("Tenure (Months with company)", 0, 120, 12)
+with col2:
+    play_time = st.slider("Play Time (Hours)", 0.0, 100.0, 15.0)
+    sessions = st.slider("Sessions Per Week", 0, 40, 5)
+    avg_session_duration = st.slider("Avg Session Duration (Mins)", 10, 300, 60)
+    level = st.slider("Player Level", 1, 100, 20)
+    achievements = st.slider("Achievements Unlocked", 0, 200, 25)
 
-monthly = st.slider("Monthly Charges ($)", 30.0, 120.0, 70.0)
+difficulty = st.selectbox("Game Difficulty Preference", ["Easy", "Medium", "Hard"])
 
-total_charges = st.number_input("Total Charges ($)", min_value=0.0, max_value=15000.0, value=float(round(monthly * tenure, 2)))
+# Mappings
+gender_map = {'Male': 0, 'Female': 1}
+location_map = {'Other': 0, 'USA': 1, 'Europe': 2, 'Asia': 3}
+genre_map = {'Strategy': 0, 'Sports': 1, 'Action': 2, 'RPG': 3, 'Simulation': 4}
+diff_map = {'Medium': 0, 'Easy': 1, 'Hard': 2}
 
-tech_support = st.selectbox("Tech Support", ["No", "Yes"])
-tech_support_val = 1 if tech_support == "Yes" else 0
-
-contract_type = st.selectbox("Contract Type", ["Month-to-Month", "One-Year", "Two-Year"])
-contract_one_year = 1 if contract_type == "One-Year" else 0
-contract_two_year = 1 if contract_type == "Two-Year" else 0
-
-internet_service = st.selectbox("Internet Service", ["DSL", "Fiber Optic", "No Internet"])
-internet_fiber = 1 if internet_service == "Fiber Optic" else 0
-internet_none = 1 if internet_service == "No Internet" else 0
+gender_val = gender_map[gender]
+location_val = location_map[location]
+genre_val = genre_map[genre]
+purchases_val = 1 if purchases == "Yes" else 0
+diff_val = diff_map[difficulty]
 
 st.divider()
 
 if st.button("🔍 Predict Churn Risk"):
 
-    X = np.array([[age, gender_val, tenure, monthly, total_charges, tech_support_val,
-                   contract_one_year, contract_two_year, internet_fiber, internet_none]])
+    # [Age, Gender, Location, GameGenre, PlayTimeHours, InGamePurchases, GameDifficulty, SessionsPerWeek, AvgSessionDurationMinutes, PlayerLevel, AchievementsUnlocked]
+    X = np.array([[age, gender_val, location_val, genre_val, play_time, purchases_val,
+                   diff_val, sessions, avg_session_duration, level, achievements]])
 
     X_scaled = scaler.transform(X)
 
-    prob = model.predict_proba(X_scaled)[0][1]
+    prob = model.predict_proba(X_scaled)[0][1] # Probability of Class 1 (Churn -> Low Engagement)
     percent = round(prob * 100, 2)
 
     if percent < 40:
-        st.success("🟢 Low Risk (Customer likely to stay)")
+        st.success("🟢 Low Risk (Player is highly engaged and likely to stay)")
     elif percent < 70:
-        st.warning("🟡 Medium Risk (Customer may leave)")
+        st.warning("🟡 Medium Risk (Player engagement is dropping)")
     else:
-        st.error("🔴 High Risk (Customer likely to leave)")
+        st.error("🔴 High Risk (Player has low engagement and is likely to churn)")
 
     st.subheader(f"Churn Probability: {percent}%")
     st.progress(int(percent))
@@ -60,4 +69,4 @@ if st.button("🔍 Predict Churn Risk"):
         st.balloons()
 
 else:
-    st.info("Adjust the sliders and click Predict to analyze churn risk.")
+    st.info("Adjust the metrics and click Predict to analyze player churn risk.")

@@ -1,45 +1,48 @@
-# 📉 Customer Churn Prediction System
+# 🎮 Player Churn AI Prediction System
 
-An end-to-end Machine Learning project that predicts customer churn using telecom customer data. Built with Python, Scikit-Learn, and deployed as an interactive web app using Streamlit.
+An end-to-end Machine Learning project that predicts player churn based on online gaming behavior data. Built with Python, Scikit-Learn, and deployed as an interactive web app using Streamlit.
 
 ## 📌 Problem Statement
 
-Telecom companies lose customers every day — but why do they leave?
+Game developers lose players every day — but why do they leave?
 
-This system analyzes customer behavior and predicts whether a customer is likely to churn, helping businesses take proactive retention measures.
+This system analyzes player behavior (e.g., play time, sessions, achievements) and predicts whether a player is likely to have low engagement (churn), helping developers take proactive retention measures.
 
 ## 🚀 Features
 
-- Data cleaning & preprocessing (handling missing values, encoding)
-- Exploratory Data Analysis with visualizations
-- Churn prediction using Logistic Regression
-- Class imbalance handling using balanced class weights
+- Data cleaning & preprocessing
+- Exploratory Data Analysis with visualizations (Notebook included)
+- Churn prediction using Random Forest Classifier
+- Class imbalance handling
 - Interactive Streamlit dashboard for real-time predictions
-- Model accuracy: **~94.5%**
+- Model accuracy: **~94.8%**
 
 ## 📊 Dataset
 
-The dataset contains 1000 telecom customer records with the following features:
+The dataset contains telecom/online gaming player records with the following features:
 
 | Feature | Description |
 |---------|-------------|
-| Age | Customer age |
+| Age | Player age |
 | Gender | Male / Female |
-| Tenure | Months with the company |
-| MonthlyCharges | Monthly billing amount |
-| TotalCharges | Total amount billed |
-| ContractType | Month-to-Month / One-Year / Two-Year |
-| InternetService | DSL / Fiber Optic / No Internet |
-| TechSupport | Whether customer has tech support |
-| Churn | Whether customer left (target variable) |
+| Location | Region of the player (USA, Europe, Asia, Other) |
+| GameGenre | Favorite game genre |
+| PlayTimeHours | Total play time |
+| InGamePurchases | Whether the player purchases add-ons |
+| GameDifficulty | Preferred difficulty (Easy, Medium, Hard) |
+| SessionsPerWeek | How often they play per week |
+| AvgSessionDurationMinutes | How long each session is |
+| PlayerLevel | The current level of the player |
+| AchievementsUnlocked | Count of achievements earned |
+| EngagementLevel | High, Medium, Low (Target Variable mapped to Churn) |
 
-**Source:** [Kaggle - Telecom Customer Churn](https://www.kaggle.com/datasets/abdullah0a/telecom-customer-churn-insights-for-analysis)
+**Source:** [Kaggle - Predict Online Gaming Behavior Dataset](https://www.kaggle.com/datasets/rabieelkharoua/predict-online-gaming-behavior-dataset)
 
 ## 🛠️ Tech Stack
 
 - **Python** — Core language
 - **Pandas & NumPy** — Data manipulation
-- **Matplotlib** — Visualizations
+- **Matplotlib/Seaborn** — Visualizations
 - **Scikit-Learn** — Machine Learning
 - **Streamlit** — Web dashboard
 - **Joblib** — Model serialization
@@ -48,13 +51,13 @@ The dataset contains 1000 telecom customer records with the following features:
 
 ```
 player-churn-AI/
-├── customer_churn_data.csv   # Dataset
-├── notebook.ipynb            # EDA, cleaning & model training
-├── app.py                    # Streamlit web app
-├── model.pkl                 # Trained ML model
-├── scaler.pkl                # Feature scaler
-├── data.txt                  # Dataset source link
-├── requirements.txt          # Python dependencies
+├── online_gaming_behavior_dataset.csv  # Dataset
+├── notebook.ipynb                      # EDA, cleaning & model training
+├── app.py                              # Streamlit web app
+├── model.pkl                           # Trained Random Forest model
+├── scaler.pkl                          # Feature scaler
+├── data.txt                            # Dataset source link
+├── requirements.txt                    # Python dependencies
 └── README.md
 ```
 
@@ -86,10 +89,9 @@ streamlit run app.py
 
 | Metric | Score |
 |--------|-------|
-| Accuracy | 94.5% |
-| Precision | 100% |
-| Recall | 93.8% |
-| F1 Score | 96.8% |
+| Accuracy | 94.8% |
+| F1 Score | ~0.95 |
+| Recall | ~0.88 |
 
 ## 👨‍💻 Author
 
