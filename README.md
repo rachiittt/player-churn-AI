@@ -1,238 +1,100 @@
-🎮 Intelligent Player Churn Prediction & Agentic Engagement Optimization
+# 📉 Customer Churn Prediction System
 
-From Gameplay Analytics → AI-Driven Retention Strategies
+An end-to-end Machine Learning project that predicts customer churn using telecom customer data. Built with Python, Scikit-Learn, and deployed as an interactive web app using Streamlit.
 
-An end-to-end AI & Machine Learning project that predicts player churn using gameplay analytics and evolves into an agentic AI assistant that recommends personalized engagement strategies to retain players.
+## 📌 Problem Statement
 
-This project demonstrates the complete pipeline:
+Telecom companies lose customers every day — but why do they leave?
 
-Data → ML Prediction → Behavior Analysis → AI Reasoning → Retention Plan
+This system analyzes customer behavior and predicts whether a customer is likely to churn, helping businesses take proactive retention measures.
 
-📌 Project Overview
+## 🚀 Features
 
-Modern games lose players every day — but why do they leave?
+- Data cleaning & preprocessing (handling missing values, encoding)
+- Exploratory Data Analysis with visualizations
+- Churn prediction using Logistic Regression
+- Class imbalance handling using balanced class weights
+- Interactive Streamlit dashboard for real-time predictions
+- Model accuracy: **~94.5%**
 
-This system analyzes player behavior patterns and:
+## 📊 Dataset
 
-Predicts whether a player is likely to leave (churn)
+The dataset contains 1000 telecom customer records with the following features:
 
-Explains the risk factors
+| Feature | Description |
+|---------|-------------|
+| Age | Customer age |
+| Gender | Male / Female |
+| Tenure | Months with the company |
+| MonthlyCharges | Monthly billing amount |
+| TotalCharges | Total amount billed |
+| ContractType | Month-to-Month / One-Year / Two-Year |
+| InternetService | DSL / Fiber Optic / No Internet |
+| TechSupport | Whether customer has tech support |
+| Churn | Whether customer left (target variable) |
 
-Generates personalized retention strategies using AI reasoning
+**Source:** [Kaggle - Telecom Customer Churn](https://www.kaggle.com/datasets/abdullah0a/telecom-customer-churn-insights-for-analysis)
 
-The project is implemented in two milestones:
+## 🛠️ Tech Stack
 
-Milestone	Focus	Goal
-Milestone 1	Machine Learning	Predict churn risk
-Milestone 2	Agentic AI	Improve player engagement
+- **Python** — Core language
+- **Pandas & NumPy** — Data manipulation
+- **Matplotlib** — Visualizations
+- **Scikit-Learn** — Machine Learning
+- **Streamlit** — Web dashboard
+- **Joblib** — Model serialization
 
-The system moves from predictive analytics → autonomous decision support.
+## 📁 Project Structure
 
-🧠 Problem Statement
-
-Game companies struggle with player retention.
-
-We solve:
-
-“Which players will leave — and how can we stop them?”
-
-Instead of only detecting churn, our system acts on it by suggesting engagement improvements.
-
-🚀 Features
-🔹 Machine Learning (Milestone 1)
-
-Player behavior data ingestion (CSV)
-
-Data preprocessing & feature engineering
-
-Churn prediction model
-
-Performance evaluation metrics
-
-Interactive dashboard
-
-🔹 Agentic AI (Milestone 2)
-
-Player behavior reasoning
-
-Retrieval-augmented recommendations
-
-Personalized retention plan generation
-
-Structured AI output
-
-Decision explanation
-
-🏗️ System Architecture
-Player Data → Preprocessing → ML Model → Churn Risk
-                                      ↓
-                               Behavior Analysis
-                                      ↓
-                               AI Reasoning Agent
-                                      ↓
-                         Personalized Retention Plan
-
-📊 Dataset Features
-
-Typical player features used:
-
-Feature	Description
-Session Frequency	How often player logs in
-Playtime	Time spent in game
-Actions	In-game activity count
-Purchases	Spending behavior
-Progression	Level completion
-Social Activity	Interaction with other players
-🤖 Machine Learning Pipeline
-Preprocessing
-
-Missing value handling
-
-Label encoding
-
-Feature scaling
-
-Feature selection
-
-Models Used
-
-Logistic Regression
-
-Random Forest Classifier
-
-Evaluation Metrics
-
-Accuracy
-
-Precision
-
-Recall
-
-AUC Score
-
-🧩 Agentic AI Module
-
-The AI assistant:
-
-Interprets churn risk
-
-Finds reasons for disengagement
-
-Retrieves retention strategies
-
-Generates actionable recommendations
-
-Example Output
-Player Summary:
-Low session frequency and declining playtime detected
-
-Risk Level:
-High churn probability
-
-Suggested Actions:
-• Offer daily login rewards
-• Trigger personalized challenges
-• Send re-engagement notification
-• Recommend cooperative gameplay mode
-
-🛠️ Tech Stack
-Machine Learning
-
-Python
-
-Scikit-Learn
-
-Pandas
-
-NumPy
-
-Agentic AI
-
-LangGraph
-
-RAG (Chroma / FAISS)
-
-Open-source LLMs
-
-Frontend / UI
-
-Streamlit
-
-Deployment
-
-Streamlit Cloud / HuggingFace Spaces / Render
-
-📁 Project Structure
+```
 player-churn-AI/
-│
-├── data/                 # Dataset
-├── notebooks/            # EDA & experiments
-├── models/               # Saved ML models
-├── preprocessing/        # Feature engineering
-├── agent/                # AI reasoning workflow
-├── app/                  # Streamlit UI
-├── utils/                # Helper functions
-├── requirements.txt
+├── customer_churn_data.csv   # Dataset
+├── notebook.ipynb            # EDA, cleaning & model training
+├── app.py                    # Streamlit web app
+├── model.pkl                 # Trained ML model
+├── scaler.pkl                # Feature scaler
+├── data.txt                  # Dataset source link
+├── requirements.txt          # Python dependencies
 └── README.md
+```
 
-🖥️ Running the Project
-1️⃣ Clone Repository
-git clone https://github.com/yourusername/player-churn-ai.git
-cd player-churn-ai
+## 🖥️ How to Run
 
-2️⃣ Create Virtual Environment
+### 1. Clone the Repository
+```bash
+git clone https://github.com/rachiittt/player-churn-AI.git
+cd player-churn-AI
+```
+
+### 2. Create Virtual Environment
+```bash
 python -m venv venv
 source venv/bin/activate
+```
 
-3️⃣ Install Dependencies
+### 3. Install Dependencies
+```bash
 pip install -r requirements.txt
+```
 
-4️⃣ Run Application
+### 4. Run the Streamlit App
+```bash
 streamlit run app.py
+```
 
-📈 Example Workflow
+## 📈 Model Performance
 
-Upload player dataset
+| Metric | Score |
+|--------|-------|
+| Accuracy | 94.5% |
+| Precision | 100% |
+| Recall | 93.8% |
+| F1 Score | 96.8% |
 
-System predicts churn probability
+## 👨‍💻 Author
 
-AI analyzes behavior patterns
+**Rachit Singh**
 
-Personalized retention strategy generated
-
-🎯 Learning Outcomes
-
-This project demonstrates:
-
-Applied Machine Learning pipeline
-
-Feature engineering for behavioral data
-
-Model evaluation & interpretation
-
-Retrieval-Augmented Generation (RAG)
-
-Agentic AI workflow design
-
-End-to-end ML deployment
-
-📌 Future Improvements
-
-Real-time player tracking
-
-Reinforcement learning rewards system
-
-Multi-game compatibility
-
-Player segmentation clustering
-
-Live notification integration
-
-👨‍💻 Author
-
-Rachit Singh
-AI/ML Project — Intelligent Gaming Analytics
-
-📜 License
+## 📜 License
 
 For academic and educational purposes only.

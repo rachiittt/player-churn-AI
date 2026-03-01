@@ -1,30 +1,19 @@
-# python
+# Python
 __pycache__/
 *.pyc
 *.pyo
 
-# virtual env
+# Virtual environment
 venv/
 env/
 
-# dataset large files
-data/raw/
-*.csv
-
-
-
-# models
-*.pkl
-*.joblib
-
-# system
+# System files
 .DS_Store
 .ipynb_checkpoints/
 
-# streamlit
+# Streamlit
 .streamlit/
 
-
-# exception for .pkl files becouse it is cousing problem in the deployment.
-!model.pkl
-!scaler.pkl
+# IDE
+.vscode/
+.idea/
