@@ -244,7 +244,8 @@ Integrate AI-driven retention recommendation module
 
 👨‍💻 Authors
 ```
-Rachit Singh, Satwik Tripathi, Ayush, Ashar
+Rachit Singh, Satwik Mani Tripathi, Ayush Sahu , Ashar Asif Shaikh .
+ 
 AI/ML Project — Player Behavior Analytics
 ```
 📜 License
