@@ -1,17 +1,10 @@
-# Gender -> 1 Female 0 Male
-# Churn -> 1 = Yes 0 = No
-# Scaler is imported in the form of = scaler.pkl
-# Model is exported as model.pkl
-# order of the X -> ['Age', 'Gender', 'Tenure', 'MonthlyCharges']
 import streamlit as st
 import joblib
 import numpy as np
 
-# ---------------- LOAD MODEL ----------------
 model = joblib.load("model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-# ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="Customer Churn Predictor", page_icon="📉", layout="centered")
 
 st.title("📉 Customer Churn Prediction System")
@@ -19,7 +12,6 @@ st.write("Adjust the sliders to simulate customer behaviour and predict churn ri
 
 st.divider()
 
-# ---------------- INPUT UI ----------------
 age = st.slider("Customer Age", 18, 80, 35)
 
 gender = st.selectbox("Gender", ["Male", "Female"])
@@ -29,37 +21,41 @@ tenure = st.slider("Tenure (Months with company)", 0, 120, 12)
 
 monthly = st.slider("Monthly Charges ($)", 30.0, 120.0, 70.0)
 
+total_charges = st.number_input("Total Charges ($)", min_value=0.0, max_value=15000.0, value=float(round(monthly * tenure, 2)))
+
+tech_support = st.selectbox("Tech Support", ["No", "Yes"])
+tech_support_val = 1 if tech_support == "Yes" else 0
+
+contract_type = st.selectbox("Contract Type", ["Month-to-Month", "One-Year", "Two-Year"])
+contract_one_year = 1 if contract_type == "One-Year" else 0
+contract_two_year = 1 if contract_type == "Two-Year" else 0
+
+internet_service = st.selectbox("Internet Service", ["DSL", "Fiber Optic", "No Internet"])
+internet_fiber = 1 if internet_service == "Fiber Optic" else 0
+internet_none = 1 if internet_service == "No Internet" else 0
+
 st.divider()
 
-# ---------------- PREDICT ----------------
 if st.button("🔍 Predict Churn Risk"):
 
-    # Arrange features
-    X = np.array([[age, gender_val, tenure, monthly]])
+    X = np.array([[age, gender_val, tenure, monthly, total_charges, tech_support_val,
+                   contract_one_year, contract_two_year, internet_fiber, internet_none]])
 
-    # Scale
     X_scaled = scaler.transform(X)
 
-    # Probability
-    prob = model.predict_proba(X_scaled)[0][1]   # probability of churn
+    prob = model.predict_proba(X_scaled)[0][1]
     percent = round(prob * 100, 2)
 
-    # Risk category
     if percent < 40:
-        risk = "🟢 Low Risk (Customer likely to stay)"
-        st.success(risk)
+        st.success("🟢 Low Risk (Customer likely to stay)")
     elif percent < 70:
-        risk = "🟡 Medium Risk (Customer may leave)"
-        st.warning(risk)
+        st.warning("🟡 Medium Risk (Customer may leave)")
     else:
-        risk = "🔴 High Risk (Customer likely to leave)"
-        st.error(risk)
+        st.error("🔴 High Risk (Customer likely to leave)")
 
-    # Progress bar animation
     st.subheader(f"Churn Probability: {percent}%")
     st.progress(int(percent))
 
-    # Balloons for loyal customers
     if percent < 40:
         st.balloons()
 
