@@ -132,6 +132,8 @@ if predict_btn:
         for i in range(int(percent)):
             time.sleep(0.005)
             progress_bar.progress(i + 1)
+
+            
             
         if percent < 40:
             st.success("✅ **Low Risk:** This player is highly active and enjoys the game. Consider offering them loyalty rewards or introducing them to advanced features.", icon="🟢")
