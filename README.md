@@ -1,103 +1,156 @@
-# 🎮 Player Churn AI Prediction System
+# 🎮 ChurnSense AI — Intelligent Player Churn Prediction & Agentic Engagement Optimization
 
-An end-to-end Machine Learning project that predicts player churn based on online gaming behavior data. Built with Python, Scikit-Learn, and deployed as an interactive web app using Streamlit.
+**Milestone 2 — End-Sem Submission**  
+*Agentic AI system for player retention using LangGraph, FAISS RAG, and Streamlit*
+
+![Python Version](https://img.shields.io/badge/Python-3.11-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.45.0-FF4B4B)
+![LangGraph](https://img.shields.io/badge/LangGraph-Enabled-orange)
 
 ## 📌 Problem Statement
+Player churn costs the gaming industry billions annually. This system first predicts which players are at risk of leaving (Milestone 1), then reasons about why and generates personalised retention strategies using an agentic AI pipeline (Milestone 2).
 
-Game developers lose players every day — but why do they leave?
+---
 
-This system analyzes player behavior (e.g., play time, sessions, achievements) and predicts whether a player is likely to have low engagement (churn), helping developers take proactive retention measures.
+## 🚀 Milestone 2 — What's New
 
-## 🚀 Features
+| Feature | Details |
+| :--- | :--- |
+| **🤖 LangGraph Agent** | 4-node graph with conditional routing and error fallback |
+| **📚 RAG (FAISS)** | Semantic retrieval of engagement strategies via sentence-transformers |
+| **📋 Structured Output** | Summary → Analysis → Plan → Refs → Disclaimer |
+| **🎨 Premium UI** | Dark gaming aesthetic, animated step progress, KPI cards |
+| **🛡️ Error Handling** | Every node has fallback logic — app never crashes |
+| **🌐 Hosted** | Streamlit Community Cloud |
 
-- Data cleaning & preprocessing
-- Exploratory Data Analysis with visualizations (Notebook included)
-- Churn prediction using Random Forest Classifier
-- Class imbalance handling
-- Interactive Streamlit dashboard for real-time predictions
-- Model accuracy: **~94.8%**
+---
+
+## 🏗️ System Architecture
+
+```text
+Player Input
+    │
+    ▼
+Random Forest Classifier (ML) → Churn Probability
+    │
+    ▼
+LangGraph Agent Graph
+  ├── Node 1: analyze_profile        → Summary + Risk Level
+  ├── Node 2: retrieve_strategies    → FAISS RAG (Top-4 strategies)
+  ├── Node 3: generate_analysis      → Risk factors + signals
+  ├── Node 4: build_retention_plan   → Numbered action plan
+  └── Node 5: error_fallback         → Safe defaults if any node fails
+    │
+    ▼
+Structured Report (Streamlit UI)
+```
+*(See `AGENT_WORKFLOW.md` for full documentation).*
+
+---
 
 ## 📊 Dataset
-
-The dataset contains telecom/online gaming player records with the following features:
+**Source:** [Kaggle — Predict Online Gaming Behavior Dataset](https://www.kaggle.com/datasets/rabieelkharoua/predict-online-gaming-behavior-dataset)
 
 | Feature | Description |
-|---------|-------------|
-| Age | Player age |
-| Gender | Male / Female |
-| Location | Region of the player (USA, Europe, Asia, Other) |
-| GameGenre | Favorite game genre |
-| PlayTimeHours | Total play time |
-| InGamePurchases | Whether the player purchases add-ons |
-| GameDifficulty | Preferred difficulty (Easy, Medium, Hard) |
-| SessionsPerWeek | How often they play per week |
-| AvgSessionDurationMinutes | How long each session is |
-| PlayerLevel | The current level of the player |
-| AchievementsUnlocked | Count of achievements earned |
-| EngagementLevel | High, Medium, Low (Target Variable mapped to Churn) |
+| :--- | :--- |
+| **Age** | Player age |
+| **Gender** | Male / Female |
+| **Location** | USA / Europe / Asia / Other |
+| **GameGenre** | Action / RPG / Strategy / Sports / Simulation |
+| **PlayTimeHours** | Total hours played |
+| **InGamePurchases** | Binary purchase flag |
+| **GameDifficulty** | Easy / Medium / Hard |
+| **SessionsPerWeek** | Weekly session count |
+| **AvgSessionDurationMinutes**| Average session length |
+| **PlayerLevel** | Current level (1–100) |
+| **AchievementsUnlocked** | Number of achievements |
+| **EngagementLevel** | Target (High/Medium/Low → mapped to churn) |
 
-**Source:** [Kaggle - Predict Online Gaming Behavior Dataset](https://www.kaggle.com/datasets/rabieelkharoua/predict-online-gaming-behavior-dataset)
+---
 
 ## 🛠️ Tech Stack
 
-- **Python** — Core language
-- **Pandas & NumPy** — Data manipulation
-- **Matplotlib/Seaborn** — Visualizations
-- **Scikit-Learn** — Machine Learning
-- **Streamlit** — Web dashboard
-- **Joblib** — Model serialization
+| Layer | Technology |
+| :--- | :--- |
+| **ML / Prediction** | Scikit-Learn (Random Forest) |
+| **Agent Framework**| LangGraph |
+| **RAG / Vector DB** | FAISS + sentence-transformers |
+| **State Management**| LangGraph TypedDict (`AgentState`) |
+| **UI** | Streamlit |
+| **Hosting** | Streamlit Community Cloud |
+| **Language** | Python 3.11 |
+
+---
+
+## 📈 Model Performance (Milestone 1)
+
+| Metric | Score |
+| :--- | :--- |
+| **Accuracy** | 94.8% |
+| **F1 Score** | ~0.95 |
+| **Recall** | ~0.88 |
+| **AUC-ROC** | ~0.97 |
+
+---
 
 ## 📁 Project Structure
 
-```
+```bash
 player-churn-AI/
+├── app.py                              # Streamlit app (Milestone 2 — full agent)
+├── churn_prediction.ipynb              # EDA, preprocessing, model training
 ├── online_gaming_behavior_dataset.csv  # Dataset
-├── notebook.ipynb                      # EDA, cleaning & model training
-├── app.py                              # Streamlit web app
 ├── model.pkl                           # Trained Random Forest model
 ├── scaler.pkl                          # Feature scaler
-├── data.txt                            # Dataset source link
-├── requirements.txt                    # Python dependencies
+├── requirements.txt                    # Dependencies
+├── AGENT_WORKFLOW.md                   # Agent architecture documentation
+├── data.txt                            # Dataset source
 └── README.md
 ```
 
-## 🖥️ How to Run
+---
 
-### 1. Clone the Repository
+## 🖥️ How to Run Locally
+
+### 1. Clone the repository
 ```bash
 git clone https://github.com/rachiittt/player-churn-AI.git
 cd player-churn-AI
 ```
 
-### 2. Create Virtual Environment
+### 2. Create virtual environment
 ```bash
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 ```
 
-### 3. Install Dependencies
+### 3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the Streamlit App
+### 4. Run the application
 ```bash
 streamlit run app.py
 ```
 
-## 📈 Model Performance
+---
 
-| Metric | Score |
-|--------|-------|
-| Accuracy | 94.8% |
-| F1 Score | ~0.95 |
-| Recall | ~0.88 |
+## 🎯 Evaluation Checklist (Milestone 2)
+- [x] LangGraph workflow with explicit state management
+- [x] RAG integration (FAISS + sentence-transformers)
+- [x] Structured output (Summary / Analysis / Plan / Refs / Disclaimer)
+- [x] Fallback & error handling on every node
+- [x] Agent workflow documentation (`AGENT_WORKFLOW.md`)
+- [x] Publicly hosted application
+- [x] GitHub repository with full codebase
 
-## 👨‍💻 Author
+---
 
-**Rachit Singh**
+## 👨‍💻 Team Members
+This is an academic project developed for the Gen AI course.
 
-## 📜 License
-
-For academic and educational purposes only.
- 
+- **Rachit Singh** *(Team Leader)*
+- **Satwik Mani Tripathi**
+- **Ashar Ali**
+- **Ayush**
