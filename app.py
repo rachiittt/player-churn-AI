@@ -207,15 +207,12 @@ def get_llm():
     if not api_key or not ChatGoogleGenerativeAI:
         return None
         
-    # Try model names (newest first) with a short timeout to avoid hanging
-    for model_name in ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"]:
-        try:
-            llm = ChatGoogleGenerativeAI(model=model_name, temperature=0.2, google_api_key=api_key, timeout=10)
-            llm.invoke("Hi")
-            return llm
-        except Exception:
-            continue
-    return None
+    # Return the LLM object directly — no connection test.
+    # Each node has its own try/except with fallback, so failures are handled gracefully.
+    try:
+        return ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.2, google_api_key=api_key)
+    except Exception:
+        return None
 
 class AgentState(TypedDict):
     player_data: dict
