@@ -1,6 +1,8 @@
 import streamlit as st
+import os
 from dotenv import load_dotenv
-load_dotenv()
+# Load environment variables from .env file in the same directory as this script
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 import joblib
 import numpy as np
 import time
@@ -194,13 +196,22 @@ def setup_rag():
         return None
 
 def get_llm():
-    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    # Check for API key in Streamlit secrets first, then environment variables
+    api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    
     if not api_key or not ChatGoogleGenerativeAI:
         return None
-    try:
-        return ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.2, google_api_key=api_key)
-    except Exception:
-        return None
+        
+    # Try a few common model names to ensure compatibility
+    for model_name in ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-pro"]:
+        try:
+            llm = ChatGoogleGenerativeAI(model=model_name, temperature=0.2, google_api_key=api_key)
+            # Test the connection with a tiny prompt
+            llm.invoke("test")
+            return llm
+        except Exception:
+            continue
+    return None
 
 class AgentState(TypedDict):
     player_data: dict
@@ -406,9 +417,11 @@ st.markdown("<h1 class='gradient-text'>AI-Based Player Churn Prediction System</
 st.markdown("<p style='color:var(--muted); font-size:1.1rem;'>Agentic Retention Assistant Pipeline (LangGraph + RAG + LLM)</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+# Check for API key in Streamlit secrets first (recommended), then environment variables
+api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+
 if not api_key:
-    st.warning("GEMINI_API_KEY environment variable not found. LLM reasoning will use fallback logic. Set your key to unlock the full AI Agent.")
+    st.warning("GEMINI_API_KEY not found in secrets or environment. LLM reasoning will use fallback logic.")
 
 if run_btn:
     X = np.array([[age, gender_map[gender], location_map[location], genre_map[genre], playtime, 1 if purchases == "Yes" else 0, diff_map[difficulty], sessions, avg_session, level, achievements]])
