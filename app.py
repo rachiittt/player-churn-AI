@@ -394,3 +394,4 @@ else:
     c1.markdown('<div class="card"><div class="card-title">Orchestration</div><div class="card-value" style="font-size:1.2rem">LangGraph</div><p style="color:var(--muted);font-size:0.85rem;margin-top:10px;">Deterministic state tracking across multi-step execution graphs.</p></div>', unsafe_allow_html=True)
     c2.markdown('<div class="card"><div class="card-title">Retrieval</div><div class="card-value" style="font-size:1.2rem">FAISS + MiniLM</div><p style="color:var(--muted);font-size:0.85rem;margin-top:10px;">Semantic vector search against the engagement knowledge base.</p></div>', unsafe_allow_html=True)
     c3.markdown('<div class="card"><div class="card-title">Reasoning</div><div class="card-value" style="font-size:1.2rem">Generative AI</div><p style="color:var(--muted);font-size:0.85rem;margin-top:10px;">Advanced contextual analysis powered by Large Language Models.</p></div>', unsafe_allow_html=True)
+ 
