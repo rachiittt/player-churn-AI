@@ -1,4 +1,6 @@
 import streamlit as st
+from dotenv import load_dotenv
+load_dotenv()
 import joblib
 import numpy as np
 import time
