@@ -100,3 +100,4 @@ streamlit run app.py
 ## 📜 License
 
 For academic and educational purposes only.
+ 
