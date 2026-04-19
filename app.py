@@ -6,6 +6,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 import joblib
 import numpy as np
 import time
+import concurrent.futures
 import os
 import smtplib
 from email.mime.text import MIMEText
@@ -277,8 +278,10 @@ Risk Level: {state['risk']} ({pct}% probability of churn)
 
 Provide a concise, professional analysis identifying key risk factors driving the potential churn, and any positive signals. Use markdown bullet points. Do not generate a retention plan yet."""
         try:
-            state["analysis"] = llm.invoke(prompt, timeout=15).content
-            return state
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future = executor.submit(lambda: llm.invoke(prompt).content)
+                state["analysis"] = future.result(timeout=10)
+                return state
         except Exception:
             pass
             
@@ -296,8 +299,10 @@ Based on this retrieved knowledge base:
 
 Generate a concise, actionable, step-by-step retention plan to engage this specific player. Priority depends on risk level. Format neatly in markdown."""
         try:
-            state["plan"] = llm.invoke(prompt, timeout=15).content
-            return state
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future = executor.submit(lambda: llm.invoke(prompt).content)
+                state["plan"] = future.result(timeout=10)
+                return state
         except Exception:
             pass
 
