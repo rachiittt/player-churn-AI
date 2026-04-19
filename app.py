@@ -199,6 +199,7 @@ def setup_rag():
     except Exception:
         return None
 
+@st.cache_resource
 def get_llm():
     # Check for API key in Streamlit secrets first, then environment variables
     api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
@@ -206,12 +207,11 @@ def get_llm():
     if not api_key or not ChatGoogleGenerativeAI:
         return None
         
-    # Try a few common model names to ensure compatibility
-    for model_name in ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-pro"]:
+    # Try model names (newest first) with a short timeout to avoid hanging
+    for model_name in ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"]:
         try:
-            llm = ChatGoogleGenerativeAI(model=model_name, temperature=0.2, google_api_key=api_key)
-            # Test the connection with a tiny prompt
-            llm.invoke("test")
+            llm = ChatGoogleGenerativeAI(model=model_name, temperature=0.2, google_api_key=api_key, timeout=10)
+            llm.invoke("Hi")
             return llm
         except Exception:
             continue
@@ -280,7 +280,7 @@ Risk Level: {state['risk']} ({pct}% probability of churn)
 
 Provide a concise, professional analysis identifying key risk factors driving the potential churn, and any positive signals. Use markdown bullet points. Do not generate a retention plan yet."""
         try:
-            state["analysis"] = llm.invoke(prompt).content
+            state["analysis"] = llm.invoke(prompt, timeout=15).content
             return state
         except Exception:
             pass
@@ -299,7 +299,7 @@ Based on this retrieved knowledge base:
 
 Generate a concise, actionable, step-by-step retention plan to engage this specific player. Priority depends on risk level. Format neatly in markdown."""
         try:
-            state["plan"] = llm.invoke(prompt).content
+            state["plan"] = llm.invoke(prompt, timeout=15).content
             return state
         except Exception:
             pass
@@ -462,10 +462,15 @@ if run_btn:
         init = AgentState(player_data=player_data, churn_prob=churn_prob, risk="", strategies=[], summary="", analysis="", plan="", refs=[], error=None)
         result = graph.invoke(init)
     except Exception as e:
-        import traceback
-        st.error(f"Error executing agent pipeline: {e}")
-        st.code(traceback.format_exc())
-        st.stop()
+        st.warning(f"⚠️ Agent pipeline encountered an issue: {e}. Showing fallback results.")
+        risk = "LOW" if churn_prob < 0.40 else "MEDIUM" if churn_prob < 0.70 else "HIGH"
+        result = {
+            "risk": risk,
+            "summary": f"Player profile: Age {age}, {gender}, {location}, {genre} genre, Level {level}.",
+            "analysis": "AI analysis unavailable. Based on the ML model prediction, please review the churn probability above.",
+            "plan": "AI retention plan unavailable. Consider personalized engagement strategies based on the player's profile.",
+            "refs": ["Fallback mode — AI reasoning was not available."],
+        }
 
     pct = round(churn_prob * 100, 1)
     risk = result.get("risk", "MEDIUM")

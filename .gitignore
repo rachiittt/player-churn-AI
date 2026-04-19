@@ -11,8 +11,7 @@ env/
 .DS_Store
 .ipynb_checkpoints/
 
-# Streamlit
-.streamlit/
+# Streamlit (secrets managed via Streamlit Cloud dashboard for public repos)
 
 # IDE
 .vscode/
