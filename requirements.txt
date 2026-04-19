@@ -6,3 +6,9 @@ joblib==1.4.2
 matplotlib==3.9.4
 imbalanced-learn==0.13.0
 python-dotenv==1.0.1
+langgraph
+langchain
+langchain-community
+faiss-cpu
+sentence-transformers
+langchain-google-genai
