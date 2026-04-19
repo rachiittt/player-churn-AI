@@ -7,19 +7,38 @@ import joblib
 import numpy as np
 import time
 import concurrent.futures
-import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import TypedDict, Optional
+from typing import TypedDict, Optional, List
+from sklearn.feature_extraction.text import TfidfVectorizer
 from langgraph.graph import StateGraph, END
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_core.embeddings import Embeddings
 from langchain_core.documents import Document
 try:
     from langchain_google_genai import ChatGoogleGenerativeAI
 except ImportError:
     ChatGoogleGenerativeAI = None
+
+
+# --- Lightweight TF-IDF Embedding class (replaces heavy sentence-transformers) ---
+class TfidfEmbeddings(Embeddings):
+    """Lightweight embedding model using TF-IDF vectors.
+    Works with FAISS for semantic search without needing torch or transformers."""
+    def __init__(self):
+        self.vectorizer = TfidfVectorizer(max_features=256)
+        self._fitted = False
+
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        vectors = self.vectorizer.fit_transform(texts).toarray()
+        self._fitted = True
+        return vectors.tolist()
+
+    def embed_query(self, text: str) -> List[float]:
+        if not self._fitted:
+            return [0.0] * 256
+        return self.vectorizer.transform([text]).toarray()[0].tolist()
 
 st.set_page_config(
     page_title="AI-Based Player Churn Prediction System",
@@ -194,7 +213,7 @@ KNOWLEDGE_BASE = [
 @st.cache_resource
 def setup_rag():
     try:
-        embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={"device": "cpu"})
+        embeddings = TfidfEmbeddings()
         docs = [Document(page_content=text) for text in KNOWLEDGE_BASE]
         return FAISS.from_documents(docs, embeddings)
     except Exception:
@@ -521,6 +540,6 @@ else:
     st.markdown("---")
     c1, c2, c3 = st.columns(3)
     c1.markdown('<div class="card"><div class="card-title">Orchestration</div><div class="card-value" style="font-size:1.2rem">LangGraph</div><p style="color:var(--muted);font-size:0.85rem;margin-top:10px;">Deterministic state tracking across multi-step execution graphs.</p></div>', unsafe_allow_html=True)
-    c2.markdown('<div class="card"><div class="card-title">Retrieval</div><div class="card-value" style="font-size:1.2rem">FAISS + MiniLM</div><p style="color:var(--muted);font-size:0.85rem;margin-top:10px;">Semantic vector search against the engagement knowledge base.</p></div>', unsafe_allow_html=True)
+    c2.markdown('<div class="card"><div class="card-title">Retrieval</div><div class="card-value" style="font-size:1.2rem">FAISS + TF-IDF</div><p style="color:var(--muted);font-size:0.85rem;margin-top:10px;">Vector search against the engagement knowledge base.</p></div>', unsafe_allow_html=True)
     c3.markdown('<div class="card"><div class="card-title">Reasoning</div><div class="card-value" style="font-size:1.2rem">Generative AI</div><p style="color:var(--muted);font-size:0.85rem;margin-top:10px;">Advanced contextual analysis powered by Large Language Models.</p></div>', unsafe_allow_html=True)
  
