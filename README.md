@@ -1,156 +1,211 @@
-# 🎮 ChurnSense AI — Intelligent Player Churn Prediction & Agentic Engagement Optimization
+# 🎮 ChurnSense AI — Player Churn Prediction & Intelligent Retention System
 
-**Milestone 2 — End-Sem Submission**  
-*Agentic AI system for player retention using LangGraph, FAISS RAG, and Streamlit*
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.45-FF4B4B?logo=streamlit&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?logo=scikit-learn&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-Agent-orange)
+![FAISS](https://img.shields.io/badge/FAISS-RAG-blue)
 
-![Python Version](https://img.shields.io/badge/Python-3.11-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.45.0-FF4B4B)
-![LangGraph](https://img.shields.io/badge/LangGraph-Enabled-orange)
+An end-to-end AI system that predicts player churn from in-game behavior data and automatically generates personalised retention strategies. The project combines classical Machine Learning for prediction with an Agentic AI pipeline (LangGraph + RAG + LLM) that reasons about each player's risk and recommends targeted actions.
 
-## 📌 Problem Statement
-Player churn costs the gaming industry billions annually. This system first predicts which players are at risk of leaving (Milestone 1), then reasons about why and generates personalised retention strategies using an agentic AI pipeline (Milestone 2).
+> **Live Demo:** [Streamlit Cloud](#) · **Dataset:** [Kaggle — Online Gaming Behavior](https://www.kaggle.com/datasets/rabieelkharoua/predict-online-gaming-behavior-dataset)
 
 ---
 
-## 🚀 Milestone 2 — What's New
+## 📌 Why This Project?
 
-| Feature | Details |
+Player churn is one of the biggest problems in the gaming industry. Studios spend heavily on acquiring players, but retaining them is where long-term revenue lives. This project tackles both sides of the problem:
+
+1. **Predict** — Identify which players are likely to leave before they actually do.
+2. **Act** — Automatically generate data-driven, personalised retention strategies so game teams can intervene at the right time.
+
+The system is designed to be practical: plug in any player's data, get a churn probability, understand the key risk drivers, and receive a prioritised action plan — all in one dashboard.
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
 | :--- | :--- |
-| **🤖 LangGraph Agent** | 4-node graph with conditional routing and error fallback |
-| **📚 RAG (FAISS)** | Semantic retrieval of engagement strategies via sentence-transformers |
-| **📋 Structured Output** | Summary → Analysis → Plan → Refs → Disclaimer |
-| **🎨 Premium UI** | Dark gaming aesthetic, animated step progress, KPI cards |
-| **🛡️ Error Handling** | Every node has fallback logic — app never crashes |
-| **🌐 Hosted** | Streamlit Community Cloud |
+| **Churn Prediction** | Random Forest classifier trained on 40K+ player records with ~95% accuracy |
+| **Risk Profiling** | Automatically categorises players into LOW / MEDIUM / HIGH risk tiers |
+| **RAG-Powered Strategies** | FAISS vector store with domain-specific gaming retention knowledge, retrieved via semantic search |
+| **AI Reasoning** | Google Gemini LLM analyzes each player's profile and explains *why* they might churn |
+| **Action Planning** | Step-by-step retention plan generated dynamically based on risk level and player context |
+| **Structured Reports** | Every analysis produces: Summary → Risk Analysis → Retention Plan → References |
+| **Premium UI** | Custom dark-mode Streamlit dashboard with animated pipeline status, KPI cards, and hover effects |
+| **Fault Tolerance** | Graceful fallbacks at every stage — the app works even without an API key |
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architecture
 
-```text
-Player Input
-    │
-    ▼
-Random Forest Classifier (ML) → Churn Probability
-    │
-    ▼
-LangGraph Agent Graph
-  ├── Node 1: analyze_profile        → Summary + Risk Level
-  ├── Node 2: retrieve_strategies    → FAISS RAG (Top-4 strategies)
-  ├── Node 3: generate_analysis      → Risk factors + signals
-  ├── Node 4: build_retention_plan   → Numbered action plan
-  └── Node 5: error_fallback         → Safe defaults if any node fails
-    │
-    ▼
-Structured Report (Streamlit UI)
 ```
-*(See `AGENT_WORKFLOW.md` for full documentation).*
+┌─────────────────────────────────────────────────────┐
+│                   Player Input                       │
+│         (Sidebar: age, genre, playtime, etc.)        │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│          ML Pipeline (Scikit-Learn)                   │
+│   StandardScaler → Random Forest → Churn Probability │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│            LangGraph Agent Pipeline                  │
+│                                                      │
+│   Node 1: Profile Builder                            │
+│       → Converts raw data into a player summary      │
+│       → Assigns risk level (LOW / MEDIUM / HIGH)     │
+│                       │                              │
+│   Node 2: RAG Retrieval                              │
+│       → Queries FAISS with player context             │
+│       → Returns top-4 relevant retention strategies   │
+│                       │                              │
+│   Node 3: LLM Analysis                              │
+│       → Gemini reasons about risk factors             │
+│       → Identifies positive signals and red flags     │
+│                       │                              │
+│   Node 4: Retention Planner                          │
+│       → Builds prioritised, actionable plan           │
+│       → Adds genre-specific recommendations           │
+│                                                      │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│              Streamlit Dashboard                     │
+│   KPI Cards · Risk Gauge · Structured Agent Report   │
+└─────────────────────────────────────────────────────┘
+```
+
+> Full technical documentation available in [`AGENT_WORKFLOW.md`](AGENT_WORKFLOW.md)
 
 ---
 
 ## 📊 Dataset
-**Source:** [Kaggle — Predict Online Gaming Behavior Dataset](https://www.kaggle.com/datasets/rabieelkharoua/predict-online-gaming-behavior-dataset)
 
-| Feature | Description |
-| :--- | :--- |
-| **Age** | Player age |
-| **Gender** | Male / Female |
-| **Location** | USA / Europe / Asia / Other |
-| **GameGenre** | Action / RPG / Strategy / Sports / Simulation |
-| **PlayTimeHours** | Total hours played |
-| **InGamePurchases** | Binary purchase flag |
-| **GameDifficulty** | Easy / Medium / Hard |
-| **SessionsPerWeek** | Weekly session count |
-| **AvgSessionDurationMinutes**| Average session length |
-| **PlayerLevel** | Current level (1–100) |
-| **AchievementsUnlocked** | Number of achievements |
-| **EngagementLevel** | Target (High/Medium/Low → mapped to churn) |
+**40,036 player records** from a Kaggle online gaming behavior dataset. Each row represents one player's engagement profile.
+
+| Feature | Type | Description |
+| :--- | :--- | :--- |
+| Age | Numeric | Player's age (15–65) |
+| Gender | Categorical | Male / Female |
+| Location | Categorical | USA / Europe / Asia / Other |
+| GameGenre | Categorical | Action / RPG / Strategy / Sports / Simulation |
+| PlayTimeHours | Numeric | Total hours played |
+| InGamePurchases | Binary | Whether the player makes purchases |
+| GameDifficulty | Categorical | Easy / Medium / Hard |
+| SessionsPerWeek | Numeric | Weekly play sessions (0–40) |
+| AvgSessionDurationMinutes | Numeric | Average session length in minutes |
+| PlayerLevel | Numeric | Current progression level (1–100) |
+| AchievementsUnlocked | Numeric | Number of achievements earned |
+| **EngagementLevel** | **Target** | High / Medium / Low → mapped to binary churn (Low = churned) |
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-| :--- | :--- |
-| **ML / Prediction** | Scikit-Learn (Random Forest) |
-| **Agent Framework**| LangGraph |
-| **RAG / Vector DB** | FAISS + sentence-transformers |
-| **State Management**| LangGraph TypedDict (`AgentState`) |
-| **UI** | Streamlit |
-| **Hosting** | Streamlit Community Cloud |
-| **Language** | Python 3.11 |
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| ML & Preprocessing | `scikit-learn`, `pandas`, `numpy` | Model training, feature engineering, scaling |
+| Agent Orchestration | `langgraph` | Multi-node stateful workflow with conditional routing |
+| Vector Search (RAG) | `faiss-cpu`, `sentence-transformers` | Semantic retrieval of retention strategies |
+| LLM Reasoning | `langchain-google-genai` (Gemini) | Natural language analysis and plan generation |
+| Frontend | `streamlit` | Interactive dashboard with custom CSS |
+| Serialization | `joblib` | Model and scaler persistence |
 
 ---
 
-## 📈 Model Performance (Milestone 1)
+## 📈 Model Performance
 
 | Metric | Score |
 | :--- | :--- |
 | **Accuracy** | 94.8% |
 | **F1 Score** | ~0.95 |
 | **Recall** | ~0.88 |
-| **AUC-ROC** | ~0.97 |
+| **Precision** | ~0.92 |
+
+The model uses `class_weight='balanced'` to handle the natural class imbalance in the dataset (roughly 74% non-churn vs 26% churn).
 
 ---
 
 ## 📁 Project Structure
 
-```bash
+```
 player-churn-AI/
-├── app.py                              # Streamlit app (Milestone 2 — full agent)
-├── churn_prediction.ipynb              # EDA, preprocessing, model training
-├── online_gaming_behavior_dataset.csv  # Dataset
-├── model.pkl                           # Trained Random Forest model
-├── scaler.pkl                          # Feature scaler
-├── requirements.txt                    # Dependencies
-├── AGENT_WORKFLOW.md                   # Agent architecture documentation
-├── data.txt                            # Dataset source
+├── app.py                               # Streamlit app — full agent pipeline
+├── churn_prediction.ipynb               # EDA, preprocessing, model training
+├── online_gaming_behavior_dataset.csv   # Raw dataset (40K records)
+├── model.pkl                            # Trained Random Forest model
+├── scaler.pkl                           # Fitted StandardScaler
+├── AGENT_WORKFLOW.md                    # Agent architecture documentation
+├── requirements.txt                     # Python dependencies
+├── data.txt                             # Dataset source link
 └── README.md
 ```
 
 ---
 
-## 🖥️ How to Run Locally
+## 🖥️ Getting Started
 
-### 1. Clone the repository
+### Prerequisites
+- Python 3.10+
+- A Google Gemini API key *(optional — the app works without it using built-in fallback logic)*
+
+### Installation
+
 ```bash
+# Clone the repository
 git clone https://github.com/rachiittt/player-churn-AI.git
 cd player-churn-AI
-```
 
-### 2. Create virtual environment
-```bash
+# Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-```
+source venv/bin/activate        # macOS/Linux
+# venv\Scripts\activate         # Windows
 
-### 3. Install dependencies
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 4. Run the application
+### Running the App
+
 ```bash
+# (Optional) Enable LLM reasoning
+export GEMINI_API_KEY="your-api-key-here"
+
+# Launch
 streamlit run app.py
 ```
 
----
-
-## 🎯 Evaluation Checklist (Milestone 2)
-- [x] LangGraph workflow with explicit state management
-- [x] RAG integration (FAISS + sentence-transformers)
-- [x] Structured output (Summary / Analysis / Plan / Refs / Disclaimer)
-- [x] Fallback & error handling on every node
-- [x] Agent workflow documentation (`AGENT_WORKFLOW.md`)
-- [x] Publicly hosted application
-- [x] GitHub repository with full codebase
+The app will open at `http://localhost:8501`. Use the sidebar to configure a player profile and click **Analyze Player Performance** to run the full pipeline.
 
 ---
 
-## 👨‍💻 Team Members
-This is an academic project developed for the Gen AI course.
+## 🔮 Future Improvements
 
-- **Rachit Singh** *(Team Leader)*
-- **Satwik Mani Tripathi**
-- **Ashar Ali**
-- **Ayush**
+- [ ] Add CSV batch upload for analysing multiple players at once
+- [ ] Integrate real-time game telemetry via API webhooks
+- [ ] Add A/B test tracking to measure retention plan effectiveness
+- [ ] Deploy a FastAPI backend for production-grade serving
+- [ ] Expand the RAG knowledge base with live gaming industry research
+
+---
+
+## 👨‍💻 Team
+
+| Name | Role |
+| :--- | :--- |
+| **Rachit Singh** | Team Leader |
+| **Satwik Mani Tripathi** | Team Member |
+| **Ashar Ali** | Team Member |
+| **Ayush** | Team Member |
+
+---
+
+## 📜 License
+
+This project was developed for academic and educational purposes.
