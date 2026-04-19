@@ -31,7 +31,11 @@ st.set_page_config(
 def load_models():
     return joblib.load("model.pkl"), joblib.load("scaler.pkl")
 
-model, scaler = load_models()
+try:
+    model, scaler = load_models()
+except Exception as e:
+    st.error(f"Failed to load project models: {e}")
+    st.stop()
 
 st.markdown("""
 <style>
@@ -386,7 +390,11 @@ genre_map = {'Strategy': 0, 'Sports': 1, 'Action': 2, 'RPG': 3, 'Simulation': 4}
 diff_map = {'Medium': 0, 'Easy': 1, 'Hard': 2}
 
 if "vectorstore" not in st.session_state:
-    st.session_state["vectorstore"] = setup_rag()
+    try:
+        st.session_state["vectorstore"] = setup_rag()
+    except Exception as e:
+        st.error(f"Failed to initialize search engine (RAG): {e}")
+        # Not stopping here as the app can still work without AI features
 
 with st.sidebar:
     st.markdown("<h2 class='gradient-text'>🎮 Player Profile</h2>", unsafe_allow_html=True)
@@ -446,9 +454,15 @@ if run_btn:
         time.sleep(0.4)
         placeholders[k].markdown(f'<div class="step"><div class="dot dot-done"></div>{label} ✓</div>', unsafe_allow_html=True)
 
-    graph = get_graph()
-    init = AgentState(player_data=player_data, churn_prob=churn_prob, risk="", strategies=[], summary="", analysis="", plan="", refs=[], error=None)
-    result = graph.invoke(init)
+    try:
+        graph = get_graph()
+        init = AgentState(player_data=player_data, churn_prob=churn_prob, risk="", strategies=[], summary="", analysis="", plan="", refs=[], error=None)
+        result = graph.invoke(init)
+    except Exception as e:
+        import traceback
+        st.error(f"Error executing agent pipeline: {e}")
+        st.code(traceback.format_exc())
+        st.stop()
 
     pct = round(churn_prob * 100, 1)
     risk = result.get("risk", "MEDIUM")

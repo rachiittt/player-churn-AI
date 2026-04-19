@@ -11,4 +11,5 @@ langchain
 langchain-community
 faiss-cpu
 sentence-transformers
+torchvision
 langchain-google-genai
