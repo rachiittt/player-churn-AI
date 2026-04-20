@@ -294,7 +294,7 @@ Provide a concise, professional analysis identifying key risk factors driving th
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         try:
             future = executor.submit(lambda: llm.invoke(prompt).content)
-            state["analysis"] = future.result(timeout=10)
+            state["analysis"] = future.result(timeout=5)
             return state
         except Exception:
             pass
@@ -317,7 +317,7 @@ Generate a concise, actionable, step-by-step retention plan to engage this speci
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         try:
             future = executor.submit(lambda: llm.invoke(prompt).content)
-            state["plan"] = future.result(timeout=10)
+            state["plan"] = future.result(timeout=5)
             return state
         except Exception:
             pass
@@ -466,7 +466,7 @@ if run_btn:
 
     for k, label in labels.items():
         placeholders[k].markdown(f'<div class="step"><div class="dot dot-active"></div><span class="gradient-text">{label}...</span></div>', unsafe_allow_html=True)
-        time.sleep(0.4)
+        time.sleep(0.1)
         placeholders[k].markdown(f'<div class="step"><div class="dot dot-done"></div>{label} ✓</div>', unsafe_allow_html=True)
 
     try:
