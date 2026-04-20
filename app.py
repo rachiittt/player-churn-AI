@@ -221,16 +221,13 @@ def setup_rag():
 
 @st.cache_resource
 def get_llm():
-    # LLM disabled for stable deployment — pipeline uses intelligent fallback logic
-    # To re-enable: uncomment the code below
-    # api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-    # if not api_key or not ChatGoogleGenerativeAI:
-    #     return None
-    # try:
-    #     return ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.2, google_api_key=api_key)
-    # except Exception:
-    #     return None
-    return None
+    api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    if not api_key or not ChatGoogleGenerativeAI:
+        return None
+    try:
+        return ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.2, google_api_key=api_key)
+    except Exception:
+        return None
 
 class AgentState(TypedDict):
     player_data: dict
@@ -294,13 +291,15 @@ Player Profile: {state['summary']}
 Risk Level: {state['risk']} ({pct}% probability of churn)
 
 Provide a concise, professional analysis identifying key risk factors driving the potential churn, and any positive signals. Use markdown bullet points. Do not generate a retention plan yet."""
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         try:
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                future = executor.submit(lambda: llm.invoke(prompt).content)
-                state["analysis"] = future.result(timeout=10)
-                return state
+            future = executor.submit(lambda: llm.invoke(prompt).content)
+            state["analysis"] = future.result(timeout=10)
+            return state
         except Exception:
             pass
+        finally:
+            executor.shutdown(wait=False)
             
     state["analysis"] = fallback_analysis(state, state["player_data"], pct)
     return state
@@ -315,13 +314,15 @@ Based on this retrieved knowledge base:
 {strats}
 
 Generate a concise, actionable, step-by-step retention plan to engage this specific player. Priority depends on risk level. Format neatly in markdown."""
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         try:
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                future = executor.submit(lambda: llm.invoke(prompt).content)
-                state["plan"] = future.result(timeout=10)
-                return state
+            future = executor.submit(lambda: llm.invoke(prompt).content)
+            state["plan"] = future.result(timeout=10)
+            return state
         except Exception:
             pass
+        finally:
+            executor.shutdown(wait=False)
 
     lines = [f"**Recommended Actions:**"]
     for i, strat in enumerate(state['strategies'], 1):
