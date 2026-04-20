@@ -221,18 +221,16 @@ def setup_rag():
 
 @st.cache_resource
 def get_llm():
-    # Check for API key in Streamlit secrets first, then environment variables
-    api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-    
-    if not api_key or not ChatGoogleGenerativeAI:
-        return None
-        
-    # Return the LLM object directly — no connection test.
-    # Each node has its own try/except with fallback, so failures are handled gracefully.
-    try:
-        return ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.2, google_api_key=api_key)
-    except Exception:
-        return None
+    # LLM disabled for stable deployment — pipeline uses intelligent fallback logic
+    # To re-enable: uncomment the code below
+    # api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    # if not api_key or not ChatGoogleGenerativeAI:
+    #     return None
+    # try:
+    #     return ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.2, google_api_key=api_key)
+    # except Exception:
+    #     return None
+    return None
 
 class AgentState(TypedDict):
     player_data: dict
@@ -446,14 +444,6 @@ st.markdown("<h1 class='gradient-text'>AI-Based Player Churn Prediction System</
 st.markdown("<p style='color:var(--muted); font-size:1.1rem;'>Agentic Retention Assistant Pipeline (LangGraph + RAG + LLM)</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Check for API key in Streamlit secrets (deployment) or environment (local .env)
-api_key = st.secrets.get("GEMINI_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-
-if not api_key:
-    st.warning("⚠️ GEMINI_API_KEY not found. Checked: st.secrets, .env, and OS environment. LLM reasoning will use fallback logic.")
-else:
-    # No warning needed if found
-    pass
 
 if run_btn:
     X = np.array([[age, gender_map[gender], location_map[location], genre_map[genre], playtime, 1 if purchases == "Yes" else 0, diff_map[difficulty], sessions, avg_session, level, achievements]])
